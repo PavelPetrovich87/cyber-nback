@@ -95,7 +95,7 @@ US-01 (Foundation)
 | **Frontend** | UI, state, navigation | `frontend/app/`, `frontend/src/` |
 | **Backend** | APIs, database, business logic | `backend/src/` |
 | **E2E** | Integration and end-to-end tests | `tests/` |
-| **System Architect** | Contracts, specs | Memory Bank (`systemPatterns.md`) |
+| **System Architect** | Contracts, specs | Memory Bank MCP (`systemPatterns.md`) |
 | **Orchestrator** | Delegation, workflow | `.cursor/rules/orchestrator.mdc` |
 
 ---
@@ -119,7 +119,7 @@ Memory-Bank-Update: true | false
 ```
 
 ### Locked Files
-- `memory-bank/*` - Orchestrator only
+- Memory Bank is MCP-only (no local `memory-bank/` mirror)
 - `contracts.md` - Architect only
 - `systemPatterns.md` - Architect only
 - `package.json` (root) - Orchestrator only

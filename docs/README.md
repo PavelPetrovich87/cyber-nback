@@ -45,7 +45,7 @@ This directory contains project management and planning documents for the Neural
 
 - **Agent Rules:** `.cursor/rules/*.mdc`
 - **GitHub Protocol:** `.cursor/rules/github-protocol.mdc` (in always-applied rules)
-- **Memory Bank:** `memory-bank/systemPatterns.md` (contracts and specs)
+- **Memory Bank:** stored via Memory Bank MCP (`systemPatterns.md` contains contracts and specs)
 
 ---
 

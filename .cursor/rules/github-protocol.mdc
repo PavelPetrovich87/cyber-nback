@@ -47,9 +47,10 @@ Memory-Bank-Update: true | false
 
 | Protected File/Path | Allowed Agent |
 | :--- | :--- |
-| `memory-bank/*` | Orchestrator only |
+| `memory-bank/systemPatterns.md` | Architect only |
+| `memory-bank/activeContext.md` | Orchestrator only |
+| `memory-bank/progress.md` | Orchestrator only |
 | `contracts.md` | Architect only |
-| `systemPatterns.md` | Architect only |
 | `package.json` (root) | Orchestrator only |
 | `backend/package.json` | Backend only |
 | `frontend/package.json` | Frontend only |

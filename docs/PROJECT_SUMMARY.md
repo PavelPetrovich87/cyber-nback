@@ -179,7 +179,7 @@ cyber-nback/
 
 ## Communication
 
-- **Design decisions:** System Architect (Memory Bank)
+- **Design decisions:** System Architect (Memory Bank MCP)
 - **Implementation questions:** Respective agent (Frontend/Backend/E2E)
 - **Workflow questions:** Orchestrator
 - **Project management:** Project Manager

@@ -1,6 +1,6 @@
 # Memory Bank Setup (Template)
 
-This workflow assumes you use a Memory Bank MCP server to store (and optionally mirror locally under `memory-bank/`):
+This workflow assumes you use a Memory Bank MCP server to store the Memory Bank files:
 - `projectBrief.md`
 - `productContext.md`
 - `techContext.md`
@@ -23,7 +23,7 @@ memory_bank_write('<your-project>', 'progress.md', '# Progress\n')
 
 ## Local stub files
 
-This template also includes `memory-bank/*.md` files so `scripts/call_agent.sh` can attach them even before MCP is fully configured.
+This project treats the Memory Bank as **MCP-only** (no local `memory-bank/` mirror/stubs). If MCP is unavailable, agents must STOP and raise an explicit `[ACTION_REQUIRED]` to restore MCP access.
 
 ## Contract requirement (hard gate)
 
