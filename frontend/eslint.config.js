@@ -13,6 +13,11 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module'
+      },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        fetch: 'readonly'
       }
     },
     plugins: {
@@ -51,7 +56,13 @@ export default [
       // TypeScript strict rules
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+        ignoreRestSiblings: true
+      }],
+      'no-unused-vars': 'off', // Turn off base rule as it can report incorrect errors
       // React Native specific rules
       'react-native/no-unused-styles': 'off', // Too many false positives with dynamic styles
       'react-native/split-platform-components': 'off',

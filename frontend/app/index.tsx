@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
-import { TerminalLayout } from '../src/components/layout'
+import { TerminalLayout, GameHeader } from '../src/components/layout'
 import { Card, Button } from '../src/components/primitives'
 import { colors, typography, spacing } from '../src/tokens'
+import { bootstrapUser } from '../src/services/bootstrapUser'
 
 export default function Index() {
+  useEffect(() => {
+    bootstrapUser().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to bootstrap user:', error)
+    })
+  }, [])
+
   return (
-    <TerminalLayout>
+    <TerminalLayout header={<GameHeader />}>
       <View style={styles.container}>
         <Card variant="emphasis">
           <Text style={styles.title}>Cyber N-Back</Text>
@@ -20,6 +28,7 @@ export default function Index() {
           <Button
             variant="primary"
             size="xl"
+            disabled={false}
             onPress={() => {
               // TODO: Navigate to game screen
             }}
@@ -31,6 +40,7 @@ export default function Index() {
             <Button
               variant="secondary"
               size="lg"
+              disabled={false}
               onPress={() => {
                 // TODO: Navigate to store screen
               }}
@@ -40,6 +50,7 @@ export default function Index() {
             <Button
               variant="secondary"
               size="lg"
+              disabled={false}
               onPress={() => {
                 // TODO: Navigate to ranking screen
               }}

@@ -4,17 +4,20 @@ import { colors, spacing } from '../../tokens'
 
 interface TerminalLayoutProps {
   children: React.ReactNode
+  header?: React.ReactNode
   showScanlines?: boolean
   showFlicker?: boolean
 }
 
 export function TerminalLayout({
   children,
+  header,
   showScanlines = true,
   showFlicker = true
 }: TerminalLayoutProps) {
   return (
     <SafeAreaView style={styles.safeArea}>
+      {header && <View style={styles.header}>{header}</View>}
       <View style={styles.content}>
         {children}
       </View>
@@ -30,6 +33,13 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: colors.bg.canvas
+  },
+  header: {
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[2],
+    paddingBottom: spacing[2],
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border.subtle,
   },
   content: {
     flex: 1,
