@@ -28,8 +28,8 @@
     },
     "scheme": "cyber-nback",
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-asset"
     ]
   }
 }
-
