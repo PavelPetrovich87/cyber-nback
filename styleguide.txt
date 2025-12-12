@@ -1,0 +1,145 @@
+Neural Breach is a Dual N‑Back training game wrapped in a terminal/cyberpunk UI, with “Connection Stability” (a health-like meter) and “Data Shards” (currency) driving progression and motivation without changing the core training mechanic.[1]
+This document is a single, developer-agent-friendly **styleguide** that defines tokens, component recipes, screen layouts, and allowable creative FX for a React Native (Expo) implementation.[1]
+
+## Design principles (non-negotiable)
+- Preserve the science: UI/UX changes must not distract from the dual-stream task (grid + audio) and should keep the training loop intact.[1]
+- Minimal animation during trials: keep feedback lightweight (brief flashes/glows); avoid heavy transforms that could impact perceived timing/clarity.[1]
+- Mobile-first ergonomics: the grid must be readable, and the two primary action buttons must be large, touch-friendly, and consistently placed.[1]
+- Performance and timing: stimulus timing should be precise (±50ms tolerance) and the session UI should stay smooth (60 FPS target).[1]
+- Accessibility: maintain high contrast and clear states for interactive elements and alerts.[1]
+
+## Style tokens (source of truth)
+All UI must be implemented via tokens (no “random” per-component hex values, paddings, or opacities), enabling strict consistency + future themes.[1]
+Default “System Green” palette aligns with the existing design language (green-on-black terminal) and uses known Tailwind palette anchors for green/yellow/red.[2][3][4][5][1]
+
+### Core color tokens (Default theme)
+| Token | Value | Usage rule |
+|---|---:|---|
+| `color.bg.canvas` | `#000000` | App background everywhere. [1] |
+| `color.accent.green.500` | `#22c55e` | Primary accent (text, borders, primary CTAs, stable state). [2] |
+| `color.accent.green.900` | `#14532d` | Subtle lines/tints, dim UI elements. [3] |
+| `color.accent.yellow.500` | `#eab308` | Warning state (stability mid, “miss” feedback family). [4] |
+| `color.accent.red.500` | `#ef4444` | Danger state (quit/destructive, “false alarm” feedback family). [5] |
+| `color.text.primary` | `rgba(34,197,94,0.85)` | Default foreground text on canvas. [2] |
+| `color.text.muted` | `rgba(34,197,94,0.55)` | Secondary labels, hints, timestamps. [2] |
+| `color.border.subtle` | `rgba(34,197,94,0.30)` | Card borders, dividers, list separators. [2] |
+| `color.surface.panel` | `rgba(0,0,0,0.80)` | Card surfaces (panels). [1] |
+
+### Typography, spacing, radii
+- Font: monospace for the terminal identity (titles may use heavier weight, but still mono).[1]
+- Type scale tokens (example): `xs=10`, `sm=12`, `md=14`, `lg=16`, `xl=20`, `2xl=24`, `3xl=30+` (use consistently across screens).[1]
+- Spacing tokens (example): `space.1=4`, `2=8`, `3=12`, `4=16`, `5=20`, `6=24`, `8=32`.[1]
+- Radius tokens (example): `radius.sm=6`, `md=10`, `lg=14` (used for chips, tiles, panels).[1]
+
+## Component recipes (RN-ready)
+Implement components as “recipes” = base style + variants + states, so agents reproduce visuals consistently across screens.[1]
+
+### Layout primitives
+- **TerminalLayout**
+  - Purpose: global wrapper that provides terminal aesthetic + CRT overlays (scanlines/vignette) and consistent page paddings.[1]
+  - RN structure: `SafeAreaView` → `View (content container)` → `View (overlay layers, pointerEvents="none")`.[1]
+  - FX rule: overlays must never block touches and must be disable-able via Config (“Scanlines”, “Flicker”).[1]
+
+- **Card**
+  - Base: panel surface + subtle green border + corner accents + optional header row.[1]
+  - Variants:
+    - `card.default`: standard panels (menus, store items).[1]
+    - `card.emphasis`: slightly brighter border/surface (block/session summary callouts).[1]
+    - `card.listRow`: tighter padding for list items (ranking rows, recent performance rows).[1]
+
+### Input primitives
+- **Button**
+  - Variants: `primary`, `secondary`, `danger`, `ghost` (exactly as your current UI set).[1]
+  - Size tokens: `sm`, `md`, `lg`, `xl`, plus rule-based heights (e.g., session action buttons are “large and touchable”).[1]
+  - States:
+    - `disabled`: reduce opacity and remove “glow emphasis” (do not rely only on color).[1]
+    - `pressed`: small scale-down + glow shift is allowed outside timing-critical animations.[1]
+
+### Game-specific primitives (must be extracted)
+- **StabilityBar**
+  - Value: `0..100`, displayed with percent label.[1]
+  - Threshold colors: `>70 green`, `40–70 yellow`, `<40 red`.[1]
+  - Warning badge: show explicit unstable warning under 40.[1]
+
+- **Grid3x3**
+  - Fixed square; 3×3 cells with subtle borders.[1]
+  - Active cell: bright fill + glow + brief pulse overlay (visual clarity first).[1]
+
+### New primitives for new screens
+- **LeaderboardRow**
+  - Left rank badge: top-3 show medals; otherwise `#rank`.[1]
+  - Highlight rule: current user (“YOU”) uses emphasis surface + brighter name.[1]
+  - Right column: mono numeric score for stable alignment.[1]
+
+- **MetricTile**
+  - 2-column grid on mobile; label is uppercase muted; value is large bold accent.[1]
+  - Used on Stats screen for max N, avg accuracy, sessions, time.[1]
+
+- **Settings controls**
+  - Slider: use `@react-native-community/slider` for Expo-compatible slider UI.[6][7]
+  - Toggle: use React Native `Switch` for scanlines/flicker toggles.[8]
+  - Icons: standardize Lucide usage via `lucide-react-native` wrapper so icon size/color come from tokens.[9][10]
+
+## Screen blueprints (composition rules)
+Each screen is a composition of the recipes above, with strict layout structure so implementation stays consistent while content evolves.[1]
+
+- **Main Menu**
+  - Header block: system status chip + large title + subtitle.[1]
+  - Stats banner: balance (shards) + streak.[1]
+  - Primary CTA: “Start Breach” (Button `primary`, `xl`, full width).[1]
+  - Secondary grid: Store / Ranking / Stats / Config entries (Button `secondary`, full width).[1]
+
+- **Game Session (During-session)**
+  - Top bar: status + Pause (ghost icon button) + Quit (ghost danger).[1]
+  - StabilityBar directly under top bar.[1]
+  - Center: Grid3x3 + audio indicator.[1]
+  - Bottom: two primary action buttons (“Match Audio”, “Match Position”) as the largest controls on screen.[1]
+  - Feedback flashes:
+    - False alarm: red border/overlay flash ~0.3s.[1]
+    - Miss: yellow border/overlay flash ~0.3s.[1]
+  - Safe Mode at stability 0: desaturate/reduce opacity and stop shard earning for the rest of the block.[1]
+
+- **Block Summary**
+  - Title: “Block Completed”.[1]
+  - Summary card: accuracy, earned shards, current N, connection status, next block info.[1]
+  - Actions: Continue (primary) and Quit & bank rewards (ghost).[1]
+
+- **Session Summary**
+  - Reward feel: prominent “session complete” + metrics grid + streak bonus callout.[1]
+  - Actions: Share (secondary) + Menu (primary).[1]
+
+- **Hardware Store**
+  - List of upgrade cards with owned/affordable/locked states and a clear balance header.[1]
+  - Locked tier preview: reduced emphasis + lock icon + requirement text.[1]
+
+- **Ranking**
+  - Header: back button + “Global Ranking”.[1]
+  - Main list: LeaderboardRow cards, with top-3 special rank styling and “YOU” highlight.[1]
+  - Footer card: “Your Rank” + “Next Rank” progress hint.[1]
+
+- **Stats**
+  - Header: back button + “Operative Stats”.[1]
+  - MetricTile grid: 2 columns.[1]
+  - Recent performance list: row template with left session meta + right results.[1]
+  - Trend block: container style standardized (implementation can later use a real chart lib without changing layout).[1]
+
+- **Config**
+  - Sections: Audio, Visual Feedback, Protocol Difficulty.[1]
+  - Controls: sliders for volume/SFX, toggles for scanlines/flicker, choice tiles for Standard vs Hardcore.[1]
+  - Bottom CTA: Apply Configuration (primary, full width).[1]
+
+## Themes + controlled creativity
+Themes are purely cosmetic swaps of token sets (foreground, accents, borders, optional glow), with zero gameplay impact.[1]
+Launch theme set includes System (default), Amber Retro, Vaporwave, Monochrome, and Cyberpunk Neon, each with defined costs and “vibe.”[1]
+
+| Theme | Cost | Intent |
+|---|---:|---|
+| System (Green) | Free | Default terminal baseline. [1] |
+| Monochrome | 200 | Minimal, clean. [1] |
+| Amber Retro | 300 | CRT/retro feel. [1] |
+| Vaporwave | 500 | Premium synthwave palette. [1] |
+| Cyberpunk Neon | 750 | High-energy neon palette. [1] |
+
+**Creativity budget (allowed)**
+- Allowed: subtle glow tuning, CRT overlays, minor pulsing accents on non-critical UI, medal flair for top-3 ranking.[1]
+- Not allowed: anything that competes with grid/audio perception during trials, or adds heavy/continuous motion in the session screen.[1]

@@ -38,13 +38,13 @@ if ! command -v cursor-agent >/dev/null 2>&1; then
   exit 1
 fi
 
-SELECTED_MODEL="composer-1"
+SELECTED_MODEL="grok-code-fast-1"
 case "$AGENT_NAME" in
   system-architect)
     SELECTED_MODEL="gpt-5.2-high"
     ;;
   orchestrator)
-    SELECTED_MODEL="composer-1"
+    SELECTED_MODEL="grok-code-fast-1"
     ;;
 esac
 
