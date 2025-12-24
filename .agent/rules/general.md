@@ -1,0 +1,23 @@
+# Cursor Project Rules (Template)
+
+## Code Style
+- Omit semicolons
+- Use const/let, not var
+- Prefer arrow functions for inline functions
+- Use strict typing in TypeScript (avoid `any`)
+- Never use default parameter values (make parameters explicit)
+
+## Architecture
+- Prefer functional programming over OOP
+- DRY / KISS / YAGNI
+- Check if logic already exists before writing new code
+
+## Error Handling
+- Always raise errors explicitly, never silently ignore them
+- Use specific error types that clearly indicate what went wrong
+- NO FALLBACKS: never mask errors with fallback mechanisms
+
+## Agentic Workflow
+- Contracts live in Memory Bank (`systemPatterns.md`) and are authored by `@system-architect`
+- Orchestrator delegates implementation work; does not implement directly
+- GitHub Protocol lives in `.agent/rules/github-protocol.md`
