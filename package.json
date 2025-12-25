@@ -8,12 +8,12 @@
     "backend:install": "cd backend && npm install",
     "backend:start": "cd backend && npm start",
     "backend:dev": "cd backend && npm run dev",
-    "install:all": "npm run frontend:install && npm run backend:install"
+    "install:all": "npm run frontend:install && npm run backend:install",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
-  "workspaces": []
+  "workspaces": [],
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
 }
-
-
-
-
-
